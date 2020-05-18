@@ -1,0 +1,3 @@
+# Serial Manipulator Kinematics
+
+## Intro
