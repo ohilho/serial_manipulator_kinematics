@@ -31,16 +31,16 @@ find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIR})
 
 # add libexample 
-# add_library(model_descriptor SHARED src/smk/model_descriptor/recursive_observer.cpp)
+add_library(model_descriptor SHARED src/smk/model_descriptor/model_descriptor.cpp)
 
 # add gtest
-# add_executable(model_descriptor_test
-#     test/smk/model_descriptor/recursive_observer_test.cpp
-# )
-# target_link_libraries(model_descriptor_test 
-#     model_descriptor 
-#     ${GTEST_LIBRARY}
-#     ${GTEST_MAIN_LIBRARY}
-#     pthread
-# )
-# add_dependencies(model_descriptor_test model_descriptor)
+add_executable(model_descriptor_test
+    test/smk/model_descriptor/model_descriptor_test.cpp
+)
+target_link_libraries(model_descriptor_test 
+    model_descriptor 
+    ${GTEST_LIBRARY}
+    ${GTEST_MAIN_LIBRARY}
+    pthread
+)
+add_dependencies(model_descriptor_test model_descriptor)
