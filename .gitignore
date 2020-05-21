@@ -1,0 +1,16 @@
+*
+!.gitignore
+!README.md
+
+!include
+!include/**
+
+!src
+!src/**
+
+!test
+!test/**
+
+!CMakeLists.txt
+
+
