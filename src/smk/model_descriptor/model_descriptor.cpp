@@ -10,6 +10,7 @@ namespace smk
             std::weak_ptr<Frame> parent_;
             std::list<std::weak_ptr<Frame>> children_;
             Eigen::Affine3d org_;
+            Eigen::Affine3d tf_;
             int id_;
             static int count_;
         };
@@ -18,7 +19,9 @@ namespace smk
 
         Frame::Frame() : data_(new impl)
         {
+            data_->name_ = "anonymous";
             data_->org_.setIdentity();
+            data_->tf_.setIdentity();
             data_->id_ = data_->count_;
             data_->count_++;
         }
@@ -49,7 +52,7 @@ namespace smk
 
         std::shared_ptr<Frame> Frame::GetParent() const
         {
-            return data_->parent_;
+            return data_->parent_.lock();
         }
 
         void Frame::AddChild(std::shared_ptr<Frame> child)
@@ -77,7 +80,27 @@ namespace smk
         {
             return data_->org_;
         }
-
+        void Frame::SetTransform(const Eigen::Affine3d &mat)
+        {
+            data_->tf_ = mat;
+        }
+        void Frame::SetTransform(const Eigen::Vector3d &trans, const Eigen::AngleAxisd &rot)
+        {
+            data_->tf_.setIdentity();
+            data_->tf_.translate(trans).rotate(rot);
+        }
+        const Eigen::Affine3d &Frame::GetTransform() const
+        {
+            return data_->tf_;
+        }
+        void Frame::UpdateTransformationFromOrigin()
+        {
+            auto p = data_->parent_.lock();
+            if (p)
+            {
+                data_->tf_ = p->GetOrigin().inverse() * GetOrigin();
+            }
+        }
         Link::Link() : Frame() {}
         Link::~Link() {}
 
@@ -120,5 +143,4 @@ namespace smk
 
     }; // namespace model_descriptor
 
-} // namespace smk
 } // namespace smk

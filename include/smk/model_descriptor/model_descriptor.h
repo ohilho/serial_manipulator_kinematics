@@ -44,7 +44,7 @@ namespace smk
             std::shared_ptr<Frame> GetParent() const;
             /// \brief Add child frame to the children list.
             ///
-            /// \param[] child child frame.
+            /// \param[in] child child frame.
             void AddChild(std::shared_ptr<Frame> child);
             /// \brief Get the Children list
             ///
@@ -52,17 +52,35 @@ namespace smk
             std::list<std::weak_ptr<Frame>> &GetChildren() const;
             /// \brief Set the Origin of this frame.
             ///
-            /// \param[] mat origin in the 3d affine transformation.
+            /// \param[in] mat origin in the 3d affine transformation.
             void SetOrigin(const Eigen::Affine3d &mat);
             /// \brief Set the Origin of this frame.
             ///
-            /// \param[] trans translation vector in 3D.
-            /// \param[] rot  Angle-Axis rotation
+            /// \param[in] trans translation vector in 3D.
+            /// \param[in] rot  Angle-Axis rotation
             void SetOrigin(const Eigen::Vector3d &trans, const Eigen::AngleAxisd &rot);
             /// \brief Get the Origin of this frame.
             ///
             /// \return const Eigen::Affine3d&  3D Affine transformation matrix of the origin.
             const Eigen::Affine3d &GetOrigin() const;
+            /// \brief Set the Transformation from the parent frame.
+            ///
+            /// \param[in] mat origin in the 3d affine transformation.
+            void SetTransform(const Eigen::Affine3d &mat);
+            /// \brief Set the Transformation from the parent frame.
+            ///
+            /// \param[in] trans translation vector in 3D.
+            /// \param[in] rot  Angle-Axis rotation
+            void SetTransform(const Eigen::Vector3d &trans, const Eigen::AngleAxisd &rot);
+            /// \brief Get the Transformation from parent frame.
+            ///
+            /// \return const Eigen::Affine3d& transformation matrix
+            const Eigen::Affine3d &GetTransform() const;
+
+            /// \brief Update transformation from the origin.
+            /// (this->transformation) = inv(parent-> transformation) * (this->origin)
+            ///
+            void UpdateTransformationFromOrigin();
 
         private:
             struct impl;

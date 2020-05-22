@@ -30,6 +30,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin)
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIR})
 
+#eigen3
+include_directories(/usr/include/eigen3)
+
 # add libexample 
 add_library(model_descriptor SHARED src/smk/model_descriptor/model_descriptor.cpp)
 
